@@ -120,3 +120,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Rest_framework
+REST_FRAMEWORK = {
+    'COERCE_DECIMAL_TO_STRING': False
+}
