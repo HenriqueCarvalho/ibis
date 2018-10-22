@@ -1,4 +1,13 @@
 from django.db import models
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 class TipoGasto(models.Model):
     criado = models.DateTimeField(auto_now_add=True)
@@ -6,7 +15,6 @@ class TipoGasto(models.Model):
     usuario = models.ForeignKey('auth.User', related_name='tipogastos', on_delete=models.CASCADE) 
          
     class Meta:
-        #ordenação dos tipo
         ordering = ('nome',)
 
 class Gasto(models.Model):
@@ -18,7 +26,6 @@ class Gasto(models.Model):
     descricao = models.TextField(blank=True)
 
     class Meta:
-        #ordenação dos gastos
         ordering = ('quando',)
 
 # Depois de criar o model roda as linhas de comando

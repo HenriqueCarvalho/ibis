@@ -38,12 +38,11 @@ class GastoSerializer(serializers.ModelSerializer):
 
 class TipoGastoSerializer(serializers.ModelSerializer):
 
-    usuario = serializers.CharField(source='usuario.username', read_only=True)
+    #usuario = serializers.CharField(source='usuario.username', read_only=True)
 
     class Meta:
         model = TipoGasto
         fields = (
             'id',
-            'usuario',
             'nome',
         )
