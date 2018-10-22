@@ -100,11 +100,9 @@ DATABASES = {
 """
 
 DATABASES = {
-    'default': {
-        dj_database_url.config(
-            default='postgres://zbtfhdrzkbldqa:c58802588678c917eba1967b5c43829a7e7342c5071c34176ccc72a11653c692@ec2-54-204-14-96.compute-1.amazonaws.com:5432/d8rhn4ustfjk0j'
-        )
-    }
+    'default':dj_database_url.config(
+        default='postgres://zbtfhdrzkbldqa:c58802588678c917eba1967b5c43829a7e7342c5071c34176ccc72a11653c692@ec2-54-204-14-96.compute-1.amazonaws.com:5432/d8rhn4ustfjk0j'
+    )
 }
 
 # Password validation
