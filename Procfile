@@ -1,1 +1,1 @@
-web: gunicorn plataformaibis.wsgi --log-file -
+web: gunicorn ibis.wsgi --log-file -
