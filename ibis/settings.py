@@ -26,8 +26,7 @@ SECRET_KEY = 'lri&zhxpj1uz8i^#8^tn*ipq2z9*01m7+5az*7kyj6je0_gt+-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['plataformaibis.herokuapp.com']
 
 # Application definition
 
