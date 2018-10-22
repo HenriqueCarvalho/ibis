@@ -1,1 +1,1 @@
-web: gunicorn heroku_blog.wsgi --log-file -
+web: gunicorn plataformaibis.wsgi --log-file -
