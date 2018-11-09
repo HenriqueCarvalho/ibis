@@ -25,8 +25,6 @@ SECRET_KEY = 'lri&zhxpj1uz8i^#8^tn*ipq2z9*01m7+5az*7kyj6je0_gt+-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['plataformaibis.herokuapp.com']
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -78,16 +76,6 @@ WSGI_APPLICATION = 'ibis.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-"""
-
-"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -98,13 +86,17 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-"""
 
+"""
 DATABASES = {
     'default':dj_database_url.config(
         default='postgres://zbtfhdrzkbldqa:c58802588678c917eba1967b5c43829a7e7342c5071c34176ccc72a11653c692@ec2-54-204-14-96.compute-1.amazonaws.com:5432/d8rhn4ustfjk0j'
     )
 }
+"""
+
+ALLOWED_HOSTS = ['127.0.0.1','plataformaibis.herokuapp.com']
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -132,7 +124,7 @@ LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = True 
 
 USE_L10N = True
 
