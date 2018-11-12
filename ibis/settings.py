@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 import dj_database_url
+import locale
+
+# Cuidado locale.setlocate() altera formato das datas e do dinheiro causando bugs
+# em funcoes que depende do nome em ingles
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

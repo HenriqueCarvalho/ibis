@@ -27,7 +27,19 @@ class AnoMes:
         self.mes = mes
 
 class GastoList(generics.ListCreateAPIView): 
-    serializer_class = GastoSerializer
+
+
+
+
+
+
+    # foi comentado EM BAIXO PARA VER A TRETA DE NAO VER quando_formatado
+    #serializer_class = GastoSerializer
+
+
+
+
+    
 
     def get_queryset(self):
         """
@@ -54,16 +66,16 @@ class GastoList(generics.ListCreateAPIView):
         #queryset, entrada, saida
         queryset = self.get_queryset()
         
+        # Setando valores default para as variaveis
         total_entrada = 0
         total_saida = 0
 
+        # Checando se a queryset é um Nonetype
         if queryset:
             total_entrada = queryset\
                         .filter(tipo_fluxo=tipo_fluxo.ENTRADA)\
                         .aggregate(Sum('valor'))\
-                        ['valor__sum']          
-
-        if queryset:
+                        ['valor__sum']       
             total_saida = queryset\
                         .filter(tipo_fluxo=tipo_fluxo.SAIDA)\
                         .aggregate(Sum('valor'))\

@@ -43,7 +43,7 @@ def translate_date_en_to_pt(date):
     """
     Converte a data em ingles para pt
     Lembrando que o formato esperado é 
-    Monday 27 Oct 2018
+    "%A %d %b %Y" - Monday 27 Oct 2018
     retorno
     Segunda, 27 Out. 2018
     """

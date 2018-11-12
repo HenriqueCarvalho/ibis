@@ -70,7 +70,8 @@ class Gasto(models.Model):
 
     @property
     def quando_formatado(self):
-        return translate_date_en_to_pt(self.quando.strftime("%A %d %b %Y"))
+        date = self.quando.strftime("%A, %d %b %Y")
+        return date.replace(' Feira', '')
  
     @property
     def valor_formatado(self):
