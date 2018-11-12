@@ -28,19 +28,8 @@ class AnoMes:
 
 class GastoList(generics.ListCreateAPIView): 
 
-
-
-
-
-
-    # foi comentado EM BAIXO PARA VER A TRETA DE NAO VER quando_formatado
-    #serializer_class = GastoSerializer
-
-
-
-
+    serializer_class = GastoSerializer
     
-
     def get_queryset(self):
         """
         Por default a url /gastos/ ira retornar todos os gastos. 
@@ -63,35 +52,51 @@ class GastoList(generics.ListCreateAPIView):
         return queryset
 
     def get(self, request, *args, **kwargs):
-        #queryset, entrada, saida
-        queryset = self.get_queryset()
+        #queryset filtrada pelos parametros
+        queryset_filtrada = self.get_queryset()
+        #queryset sem parametros 
+        queryset = Gasto.objects.all()
         
-        # Setando valores default para as variaveis
-        total_entrada = 0
-        total_saida = 0
+        entrada = queryset_filtrada\
+                    .filter(tipo_fluxo=tipo_fluxo.ENTRADA)\
+                    .aggregate(Sum('valor'))\
+                    ['valor__sum']
 
-        # Checando se a queryset é um Nonetype
-        if queryset:
-            total_entrada = queryset\
-                        .filter(tipo_fluxo=tipo_fluxo.ENTRADA)\
-                        .aggregate(Sum('valor'))\
-                        ['valor__sum']       
-            total_saida = queryset\
-                        .filter(tipo_fluxo=tipo_fluxo.SAIDA)\
-                        .aggregate(Sum('valor'))\
-                        ['valor__sum']
-            
-        saldo = total_entrada - total_saida
+        #Checando se a entrada filtrada pelos parametros é um Nonetype
+        if entrada is None: entrada = 0
 
+        saida = queryset_filtrada\
+                    .filter(tipo_fluxo=tipo_fluxo.SAIDA)\
+                    .aggregate(Sum('valor'))\
+                    ['valor__sum']
+
+        #Checando se a entrada filtrada pelos parametros é um Nonetype
+        if saida is None: saida = 0
+
+        entrada_total = queryset\
+                    .filter(tipo_fluxo=tipo_fluxo.ENTRADA)\
+                    .aggregate(Sum('valor'))\
+                    ['valor__sum']       
+        saida_total = queryset\
+                    .filter(tipo_fluxo=tipo_fluxo.SAIDA)\
+                    .aggregate(Sum('valor'))\
+                    ['valor__sum']
+
+        # Calculado o saldo sem filtros das datas em caso de nonetype saldo eh 0
+        try:
+            saldo = entrada_total - saida_total
+        except:
+            saldo = 0
+        
         data = {
-            'total_entrada': valor_formatado(total_entrada),
-            'total_saida': valor_formatado(total_saida),
+            'entrada': valor_formatado(entrada),
+            'saida': valor_formatado(saida),
             'saldo': valor_formatado(saldo),
-            'gastos': AnnotationGastoSerializer(queryset, many=True).data
+            'gastos': AnnotationGastoSerializer(queryset_filtrada, many=True).data
         }
 
         return Response(data)
-    
+
     #perform_create() allows us to modify how the instance save is managed
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
