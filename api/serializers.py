@@ -43,8 +43,10 @@ class AnnotationGastoSerializer(serializers.Serializer):
 class GastoSerializer(serializers.ModelSerializer):
     usuario = serializers.CharField(source='usuario.username', read_only=True)
     #tipo = TipoGastoSerializer(many=False, read_only=True) #By default nested serializers are read-only
-    criado = serializers.DateTimeField(format="%A, %d %b %Y %H:%M", required=False, read_only=True)
-    quando = serializers.DateField(format="%A %d %b %Y", required=False, read_only=False)
+    #criado = serializers.DateTimeField(format="%A, %d %b %Y %H:%M", required=False, read_only=True)
+    criado = serializers.DateTimeField(required=False, read_only=True)
+    quando = serializers.DateField(required=False, read_only=False)
+    criado_formatado = serializers.ReadOnlyField()
     quando_formatado = serializers.ReadOnlyField()
     valor_formatado = serializers.ReadOnlyField()
 
@@ -56,30 +58,10 @@ class GastoSerializer(serializers.ModelSerializer):
             'tipo_fluxo',
             'tipo_gasto',
             'criado',
+            'criado_formatado',
             'quando',
             'quando_formatado',
             'valor',
             'valor_formatado',
             'descricao',
         )
-
-        """
-        fields = (
-            '__all__'
-        )
-        """
-
-        #read_only_fields = ('tipo',)
-        #extra_kwargs = {'password': {'write_only': True}}
-    
-
-    #def validate(self,data):
-        #print(data)
-        #return TipoGasto.objects.get(pk=data)
-        #return data
-
-    #def create(self, validated_data):
-        #tipo_data = validated_data.pop('tipo')
-        #gasto = Gasto.objects.create(**validated_data)
-        #Gasto.objects.create(gasto=gasto, **tipo_data)
-        #return gasto
