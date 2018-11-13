@@ -7,6 +7,7 @@ from api.utils import tipo_fluxo, tipo_gasto
 from api.utils.date import translate_date_en_to_pt
 from api.utils.string import *
 from django.core.validators import MinValueValidator
+from decimal import Decimal
 
 """
 from django.contrib.auth.models import User
@@ -63,7 +64,7 @@ class Gasto(models.Model):
     tipo_fluxo = models.IntegerField(choices=tipo_fluxo.CHOICES)
     usuario = models.ForeignKey('auth.User', related_name='gastos', on_delete=models.CASCADE) 
     quando = models.DateField(auto_now_add=True)
-    valor = models.DecimalField(max_digits=8, decimal_places=2, validators = [MinValueValidator(0.01)])
+    valor = models.DecimalField(max_digits=8, decimal_places=2, validators = [MinValueValidator(Decimal('0.01'))])
     descricao = models.TextField(blank=True)
     
     class Meta:
