@@ -81,9 +81,9 @@ class endereco(models.Model):
 
 """
 class Filiado(models.Model):
-    """
+
     #Campos obrigatorios: cnpj, razao_social, email, presidente_nome
-    """
+    
     criado = models.DateTimeField(auto_now_add=True) #VER COMO QUE DEIXA ISSO SEGURO QUE NAO POSSA SER ALTERADO
     usuario = models.ForeignKey('auth.User', on_delete=models.PROTECT)
     cnpj = models.CharField(
