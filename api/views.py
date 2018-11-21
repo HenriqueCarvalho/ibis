@@ -70,23 +70,25 @@ class GastoList(generics.ListCreateAPIView):
                     .aggregate(Sum('valor'))\
                     ['valor__sum']
 
-        #Checando se a entrada filtrada pelos parametros é um Nonetype
+        #Checando se a saida filtrada pelos parametros é um Nonetype
         if saida is None: saida = 0
 
         entrada_total = queryset\
                     .filter(tipo_fluxo=tipo_fluxo.ENTRADA)\
                     .aggregate(Sum('valor'))\
                     ['valor__sum']       
+        
+        if entrada_total is None: entrada_total = 0
+
         saida_total = queryset\
                     .filter(tipo_fluxo=tipo_fluxo.SAIDA)\
                     .aggregate(Sum('valor'))\
                     ['valor__sum']
 
-        # Calculado o saldo sem filtros das datas em caso de nonetype saldo eh 0
-        try:
-            saldo = entrada_total - saida_total
-        except:
-            saldo = 0
+        if saida_total is None: saida_total = 0
+
+        # Calculado o saldo que a diferenca de todas as entradas menos a saida
+        saldo = entrada_total - saida_total
         
         data = {
             'entrada': valor_formatado(entrada),

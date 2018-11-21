@@ -6,7 +6,7 @@ from rest_framework.authtoken.models import Token
 from api.utils import tipo_fluxo, tipo_gasto
 from api.utils.date import translate_date_en_to_pt
 from api.utils.string import *
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, RegexValidator
 from decimal import Decimal
 
 """
@@ -57,18 +57,99 @@ class CategoriaGasto(models.Model):
         ordering = ('nome',)
 """
 
-class Gasto(models.Model):
+"""
+class endereco(models.Model):
     criado = models.DateTimeField(auto_now_add=True) #VER COMO QUE DEIXA ISSO SEGURO QUE NAO POSSA SER ALTERADO
+    usuario = models.ForeignKey('auth.User', on_delete=models.PROTECT)
+    cep = models.CharField(
+            max_length=8,
+            validators=[
+                    RegexValidator(
+                        regex='^.{8}$',
+                        message='CEP precisa ser 8 digitos.',
+                        code='nomatch'
+                    )
+                ]
+        ) #89026-385 8 Dig
+    cidade = 
+    estado =
+    bairro =
+    logradouro =
+    numero = 
+    complemento(opcional)
+"""
+
+"""
+class Filiado(models.Model):
+    """
+    Campos obrigatorios: cnpj, razao_social, email, presidente_nome
+    """
+    criado = models.DateTimeField(auto_now_add=True) #VER COMO QUE DEIXA ISSO SEGURO QUE NAO POSSA SER ALTERADO
+    usuario = models.ForeignKey('auth.User', on_delete=models.PROTECT)
+    cnpj = models.CharField(
+        max_length=14,
+        unique=True,
+        validators=[
+            RegexValidator(
+                regex='^.{14}$',
+                message='cnpj precisa ser 14 digitos.',
+                code='nomatch'
+            )
+        ]
+    )
+    razao_social = models.CharField(verbose_name='Razão Social', max_length=100)
+    sigla = models.CharField(max_length=100, blank=True) #opcional
+    site = models.CharField(max_length=60, blank=True)
+    email = models.CharField(max_length=60)
+    telefone_fixo = models.CharField(
+        max_length=11,
+        blank=True,
+        validators=[
+            RegexValidator(
+                regex='^.{10}$',
+                message='Telefone fixo precisa ser 10 digitos. Ex:(12) 1234-1234',
+                code='nomatch'
+            )
+        ]
+    ) #(86)3300-0123 #opcional 11 Dig
+    celular = models.CharField(
+        max_length=11,
+        blank=True,
+        validators=[
+            RegexValidator(
+                regex='^.{11}$',
+                message='Celular precisa ser 11 digitos. Ex:(12) 91234-1234',
+                code='nomatch'
+            )
+        ]
+    ) #(86)93300-0123 #opcional 11 Dig
+    presidente_nome = models.CharField(max_length=80)
+    presidente_celular = models.CharField(
+        max_length=11,
+        blank=True,
+        validators=[
+            RegexValidator(
+                regex='^.{11}$',
+                message='Celular precisa ser 11 digitos. Ex:(12) 91234-1234',
+                code='nomatch'
+            )
+        ]
+    ) #(86)93300-0123 #opcional 11 Dig
+"""
+
+
+class Gasto(models.Model):
+    criado = models.DateTimeField(auto_now_add=True)
     #categoria = models.ForeignKey(TipoGasto, on_delete=models.CASCADE)
     tipo_gasto = models.IntegerField(choices=tipo_gasto.CHOICES, default=tipo_gasto.OUTROS)
     tipo_fluxo = models.IntegerField(choices=tipo_fluxo.CHOICES)
-    usuario = models.ForeignKey('auth.User', related_name='gastos', on_delete=models.CASCADE) 
+    usuario = models.ForeignKey('auth.User', related_name='gastos', on_delete=models.PROTECT) 
     quando = models.DateField(auto_now_add=True)
     valor = models.DecimalField(max_digits=8, decimal_places=2, validators = [MinValueValidator(Decimal('0.01'))])
     descricao = models.TextField(blank=True)
     
     class Meta:
-        ordering = ('-quando',)
+        ordering = ('-quando','-id')
 
     @property
     def criado_formatado(self):
